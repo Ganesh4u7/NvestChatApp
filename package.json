@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server",
+    "dev": "nodemon server",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -19,7 +20,16 @@
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
+    "mongoose": "^5.9.19",
+    "ngx-countdown": "^9.0.1",
+    "nodemon": "^2.0.4",
+    "normalize-port": "^1.0.0",
+    "path": "^0.12.7",
     "rxjs": "~6.5.4",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
@@ -44,3 +54,4 @@
     "typescript": "~3.8.3"
   }
 }
+
