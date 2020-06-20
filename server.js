@@ -57,7 +57,7 @@ io.on('connection',socket=>{
 })
 
 
-var port =  process.env.port || 8080;
+var port =  process.env.port || 3000;
 
 server.listen(port,function (err,res) {
 if(err){console.log(err)}
