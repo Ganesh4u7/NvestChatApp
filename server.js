@@ -73,7 +73,9 @@ io.on('connection',socket=>{
                 for (let i = 0; i < 3; i++) {
                   if (data1.rooms[i].status == 1) {
                     socket.join(data1.rooms[i].room);
+                    console.log(timer[i]);
                     socket.emit('showTimer',{time: timer[i],index:i});
+                    socket.emit('message',formatMessage(botName,'Welcome to chat room',i));
                     let index = i;
                     socket.broadcast.to(data1.rooms[i].room).emit('message',
                       formatMessage(botName, `${data1.username} is online`, index));
@@ -139,9 +141,17 @@ io.on('connection',socket=>{
      //console.log(user);
 
         socket.emit('message',formatMessage(botName,'Welcome to chat room',index));
-        socket.broadcast.to(room).emit('message',
-          formatMessage(botName, `${username} is online`, index));
+      socket.broadcast.to(room).emit('message',
+        formatMessage(botName, `${username} is online`, index));
 
+
+        // socket.broadcast.to(room).emit('message',
+        //     formatMessage(botName,`${user.username} has joined`),index);
+
+        // io.to(user.room).emit('roomUsers',{
+        //     room:user.room,
+        //     users:getRoomUsers(user.room)
+        // });
     });
 
 
@@ -212,7 +222,7 @@ io.on('connection',socket=>{
 })
 
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 server.listen(port,function (err,res) {
