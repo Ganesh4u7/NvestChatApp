@@ -76,7 +76,7 @@ io.on('connection',socket=>{
                     messageData.find({room:data1.rooms[i].room},function (err2,data2) {
                          if(err2){console.log(err2)}
                          else{
-                           // console.log(data2);
+                           
                            socket.emit('messagesData',{messages:data2,index:i});
                          }
                     }).limit(30);
