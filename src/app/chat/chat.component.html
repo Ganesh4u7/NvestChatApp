@@ -47,9 +47,8 @@
 <div class="chat-container" *ngIf="route == 1">
   <header class="chat-header">
     <h1>ChatApp</h1>
-    <div *ngIf="show == 1"   >
-      <p style="font-weight: bold">This Room Expries in </p>  <countdown [config]="{leftTime: timer[roomNumber]}" style="margin-left: 40px"></countdown>
-    </div>
+
+    <p *ngIf="typing[roomNumber].status == 1">{{typing[roomNumber].message}}</p>
 
     <a class="btn" (click)="leaveRoom()">Sign out</a>
   </header>
@@ -65,6 +64,9 @@
         <p *ngIf="notifications[i] == 1" style="color: #5cb85c">new messages</p>
        </div>
       </h2>
+      <div *ngIf="show == 1" style="margin-left: 30px" >
+        <p style="font-weight: bold">This Room Expries in </p>  <countdown [config]="{leftTime: timer[roomNumber]}" style="margin-left: 40px"></countdown>
+      </div>
 
     </div>
     <div class="chat-messages" id="chat-messages">
@@ -82,7 +84,7 @@
           <p style="text-align: center;color: #5cb85c;font-size: 14px;">{{message.text}}</p>
         </div>
       </div>
-      <p *ngIf="typing[roomNumber].status == 1">{{typing[roomNumber].message}}</p>
+<!--      <p *ngIf="typing[roomNumber].status == 1">{{typing[roomNumber].message}}</p>-->
 
     </div>
   </main>

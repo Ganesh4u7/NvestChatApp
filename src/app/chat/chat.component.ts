@@ -79,7 +79,7 @@ export class ChatComponent implements OnInit {
       setTimeout(()=>{
         this.typing[data.index].status =0;
         this.typing[data.index].message =null;
-      },1500);
+      },2500);
 
     });
 
