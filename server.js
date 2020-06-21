@@ -116,13 +116,7 @@ io.on('connection',socket=>{
                  timer[index]=myDate.getTime();
 
                 console.log(timer[index]);
-                messageData.find({room:room},function (err2,data2) {
-                  if(err2){console.log(err2)}
-                  else{
-                    console.log(data2);
-                    socket.emit('messagesData',{messages:data2,index:index});
-                  }
-                }).limit(30);
+                
                 socket.emit('showTimer',{time: timer[index],index:index});
 
                 setTimeout(function () {
@@ -136,6 +130,13 @@ io.on('connection',socket=>{
                   })
                 },1000*60*60*5 );
               }else{
+                messageData.find({room:room},function (err2,data2) {
+                  if(err2){console.log(err2)}
+                  else{
+                    console.log(data2);
+                    socket.emit('messagesData',{messages:data2,index:index});
+                  }
+                }).limit(30);
                 socket.emit('showTimer',{time: timer[index],index:index});
               }
               socket.emit('rooms',data1.rooms);
