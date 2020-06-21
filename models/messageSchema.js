@@ -4,8 +4,9 @@ var schema = mongoose.Schema;
 var messageSchema = new schema({
     username:String,
     date:String,
+    searchDate:Date,
     room:String,
-    message:String
+    text:String
 
 });
 
