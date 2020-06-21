@@ -10,10 +10,9 @@ export class ChatService{
 
   allowFind: boolean;
 
-  private socket = io('https://nvest-chatapp.herokuapp.com');
+  private socket = io('http://localhost:4000');
 
-  constructor() {
-  }
+  constructor() { }
 
   setupSocketConnection() {
   }
@@ -42,6 +41,18 @@ export class ChatService{
   {
     let observable = new Observable<{username:string,date:string,text:string,index:number}>(observer=>{
       this.socket.on('message', (data)=>{
+        observer.next(data);
+      });
+      return () => {this.socket.disconnect();}
+    });
+
+    return observable;
+
+  }
+  messagesData()
+  {
+    let observable = new Observable<{messages:any,index:number}>(observer=>{
+      this.socket.on('messagesData', (data)=>{
         observer.next(data);
       });
       return () => {this.socket.disconnect();}
