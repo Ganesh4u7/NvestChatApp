@@ -73,6 +73,13 @@ io.on('connection',socket=>{
                 for (let i = 0; i < 3; i++) {
                   if (data1.rooms[i].status == 1) {
                     socket.join(data1.rooms[i].room);
+                    messageData.find({room:data1.rooms[i].room},function (err2,data2) {
+                         if(err2){console.log(err2)}
+                         else{
+                           // console.log(data2);
+                           socket.emit('messagesData',{messages:data2,index:i});
+                         }
+                    }).limit(30);
                     console.log(timer[i]);
                     socket.emit('showTimer',{time: timer[i],index:i});
                     socket.emit('message',formatMessage(botName,'Welcome to chat room',i));
@@ -96,7 +103,8 @@ io.on('connection',socket=>{
       usersData.find({username:username},function (err,data) {
         console.log('user found');
         if(err){console.log(err)}
-        else{console.log(data)
+        else{
+          // console.log(data)
           data[0].rooms[index].status = 1;
           data[0].save(function (err1,data1) {
             if(err1){console.log(err1)}
@@ -108,6 +116,13 @@ io.on('connection',socket=>{
                  timer[index]=myDate.getTime();
 
                 console.log(timer[index]);
+                messageData.find({room:data1.rooms[index].room},function (err2,data2) {
+                  if(err2){console.log(err2)}
+                  else{
+                    // console.log(data2);
+                    socket.emit('messagesData',{messages:data2,index:index});
+                  }
+                }).limit(30);
                 socket.emit('showTimer',{time: timer[index],index:index});
 
                 setTimeout(function () {
@@ -124,34 +139,19 @@ io.on('connection',socket=>{
                 socket.emit('showTimer',{time: timer[index],index:index});
               }
               socket.emit('rooms',data1.rooms);
-
             }
           });
-
         }
       });
-
-
-        console.log('-------');
-       // console.log(user);
-
      if(user){
        socket.join(room);
-     }
-     //console.log(user);
-
-        socket.emit('message',formatMessage(botName,'Welcome to chat room',index));
+      }
+     setTimeout(()=>{
+       socket.emit('message',formatMessage(botName,'Welcome to chat room',index));
+     },500);
       socket.broadcast.to(room).emit('message',
         formatMessage(botName, `${username} is online`, index));
 
-
-        // socket.broadcast.to(room).emit('message',
-        //     formatMessage(botName,`${user.username} has joined`),index);
-
-        // io.to(user.room).emit('roomUsers',{
-        //     room:user.room,
-        //     users:getRoomUsers(user.room)
-        // });
     });
 
 
@@ -164,20 +164,21 @@ io.on('connection',socket=>{
         var messageInfo = new messageData({
           username:data.username,
           date: moment().format('h:mm a'),
-          message:data.message,
+          text:data.message,
+          searchDate:Date.now(),
           room:data.room
         });
         messageInfo.save(function (err,data) {
           if(err){console.log(err)}
           else{
-            console.log(data);
+            // console.log(data);
           }
         });
 
     });
 
     socket.on('typing',(data)=>{
-      console.log(data);
+      // console.log(data);
      socket.broadcast.to(data.room).emit('typing',{username:data.username,index:data.index,
        message:`${data.username} is Typing...`})
   });
@@ -185,7 +186,7 @@ io.on('connection',socket=>{
     socket.on('signout',()=>{
       var user = userLeave(socket.id);
       if(user){
-        console.log(user.rooms);
+        // console.log(user.rooms);
         io.to(user.room).emit('message',formatMessage(botName,`${user.username} disconnected`));
         io.to(user.room).emit('roomUsers',{
           room:user.room,
