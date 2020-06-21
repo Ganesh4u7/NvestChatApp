@@ -36,7 +36,9 @@ export class ChatComponent implements OnInit {
       console.log(data)
       this.messageArrays[data.index].push(data);
       if (data.index != this.roomNumber) {
-             this.notifications[data.index] =1;
+             if(data.text != 'Welcome to chat room') {
+               this.notifications[data.index] = 1;
+             }
       }
     });
     this.chatService.roomUsers().subscribe(data=>{
