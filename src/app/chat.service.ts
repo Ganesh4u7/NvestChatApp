@@ -10,9 +10,11 @@ export class ChatService{
 
   allowFind: boolean;
 
-  private socket = io('http://localhost:4000');
+  private socket;
 
-  constructor() { }
+  constructor() {
+  this.socket = io().connect();
+  }
 
   setupSocketConnection() {
   }
