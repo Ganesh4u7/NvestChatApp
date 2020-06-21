@@ -40,6 +40,7 @@ export class ChatComponent implements OnInit {
                this.notifications[data.index] = 1;
              }
       }
+      document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
     });
     this.chatService.roomUsers().subscribe(data=>{
     this.room =data.room;
@@ -50,9 +51,11 @@ export class ChatComponent implements OnInit {
     });
     this.chatService.joinedUser().subscribe(data=>{
       this.userData =data;
+
       this.username = data.username;
       for(let i =0;i<3;i++){
          if(data.rooms[i].status ==1){
+           this.show = 1;
            this.messageArray = this.messageArrays[i];
            break;
          }
@@ -76,7 +79,7 @@ export class ChatComponent implements OnInit {
     });
     this.chatService.showTimer().subscribe(data=>{
       this.times[data.index] = data.time;
-
+  console.log('for time');
       let d = new Date().getTime();
 
       let e = data.time;
@@ -112,7 +115,9 @@ export class ChatComponent implements OnInit {
   //
   // }
   joinRoom(index){
- this.show = 1;
+    this.show = 1;
+    this.style[this.roomNumber] = 0;
+    this.style[index]=1;
     this.userData.rooms[index].status = 1;
     this.messageArray = this.messageArrays[index];
     this.chatService.joinRoom({username:this.username,room:this.userData.rooms[index].room,index:index});
@@ -138,11 +143,24 @@ export class ChatComponent implements OnInit {
     this.route =0;
     this.chatService.signout();
     this.show =0;
+    this.messageArray = [];
+    this.messageArrays =[[],[],[]];
+    this.style =[1,0,0];
+    this.times=[null,null,null];
+    this.timer=[null,null,null];
+    this.typing =[{status:0,message:null},{status:0,message:null},{status:0,message:null}];
+    this.username = null;
+    this.userData = {username:'',id:'',rooms:[]};
+    this.chatRooms =null;
+    this.checkEmail =true;
+    this.roomNumber =0;
+    this.notifications =[0,0,0];
   }
   sendMessage(){
     this.chatService.sendMessage({username:this.username,message:this.message,room:this.userData.rooms[this.roomNumber].room,
     index:this.roomNumber});
     this.message = '';
+
   }
   keyPress(){
 

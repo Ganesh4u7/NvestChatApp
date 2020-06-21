@@ -24,7 +24,7 @@
   <main class="join-main">
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-control">
-        <label for="username">Username</label>
+        <label for="username">Email</label>
         <input
           type="email"
           name="email"
@@ -47,7 +47,9 @@
 <div class="chat-container" *ngIf="route == 1">
   <header class="chat-header">
     <h1>ChatApp</h1>
-
+    <div *ngIf="show == 1"   >
+      <p style="font-weight: bold">This Room Expries in </p>  <countdown [config]="{leftTime: timer[roomNumber]}" style="margin-left: 40px"></countdown>
+    </div>
 
     <a class="btn" (click)="leaveRoom()">Sign out</a>
   </header>
@@ -65,10 +67,10 @@
       </h2>
 
     </div>
-    <div class="chat-messages" >
-      <div *ngIf="show == 1">
-        <p>Room Expries in </p>  <countdown [config]="{leftTime: timer[roomNumber]}"></countdown>
-      </div>
+    <div class="chat-messages" id="chat-messages">
+<!--      <div *ngIf="show == 1" style="position: fixed;background: #d9534f;" class="message" >-->
+<!--        <p class="meta">Room Expries in </p>  <countdown [config]="{leftTime: timer[roomNumber]}"></countdown>-->
+<!--      </div>-->
       <div class="message" *ngFor="let message of messageArray;let i =index;">
        <div *ngIf="message.username!='bot'">
         <p class="meta">{{message.username}} <span>{{message.date}}</span></p>
