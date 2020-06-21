@@ -139,15 +139,9 @@ io.on('connection',socket=>{
      //console.log(user);
 
         socket.emit('message',formatMessage(botName,'Welcome to chat room',index));
+        socket.broadcast.to(room).emit('message',
+          formatMessage(botName, `${username} is online`, index));
 
-
-        // socket.broadcast.to(room).emit('message',
-        //     formatMessage(botName,`${user.username} has joined`),index);
-
-        // io.to(user.room).emit('roomUsers',{
-        //     room:user.room,
-        //     users:getRoomUsers(user.room)
-        // });
     });
 
 
