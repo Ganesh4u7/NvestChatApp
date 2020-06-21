@@ -33,19 +33,29 @@ export class ChatComponent implements OnInit {
 
   constructor(private chatService: ChatService) {
     this.chatService.newUserEntered().subscribe(data=> {
-      console.log(data)
-      this.messageArrays[data.index].push(data);
-      if (data.index != this.roomNumber) {
-             if(data.text != 'Welcome to chat room') {
-               this.notifications[data.index] = 1;
-             }
-      }
-      document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+      //console.log(data)
+      setTimeout(()=>{
+
+        this.messageArrays[data.index].push(data);
+        if (data.index != this.roomNumber) {
+          if(data.text != 'Welcome to chat room') {
+            this.notifications[data.index] = 1;
+          }
+        }
+        document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+      },500);
     });
     this.chatService.roomUsers().subscribe(data=>{
     this.room =data.room;
     this.users=data.users;
     });
+    this.chatService.messagesData().subscribe(data=>{
+      for(let i=0;i<data.messages.length;i++){
+
+        this.messageArrays[data.index].push(data.messages[i]);
+      }
+      //console.log(data.messages);
+    })
     this.chatService.roomsUpdate().subscribe(data=>{this.userData.rooms =data;
 
     });
@@ -65,7 +75,7 @@ export class ChatComponent implements OnInit {
     this.chatService.typingNotification().subscribe(data=>{
       this.typing[data.index].status =1;
       this.typing[data.index].message =data.message;
-      console.log('typing');
+     // console.log('typing');
       setTimeout(()=>{
         this.typing[data.index].status =0;
         this.typing[data.index].message =null;
@@ -79,13 +89,13 @@ export class ChatComponent implements OnInit {
     });
     this.chatService.showTimer().subscribe(data=>{
       this.times[data.index] = data.time;
-  console.log('for time');
+      // console.log('for time');
       let d = new Date().getTime();
 
       let e = data.time;
 
       let noTime = (d - e)/ 1000;
-      console.log(noTime);
+     // console.log(noTime);
       this.timer[data.index] = Math.abs(noTime);
 
     });
@@ -106,7 +116,7 @@ export class ChatComponent implements OnInit {
     this.checkEmail =check;
     if(check == true) {
       this.route = 1;
-      console.log(this.room);
+     // console.log(this.room);
       // this.chatService.joinRoom({username:this.username,room:this.room});
       this.chatService.join({username: this.loginForm.value.email.toLowerCase()});
     }
@@ -118,6 +128,7 @@ export class ChatComponent implements OnInit {
     this.show = 1;
     this.style[this.roomNumber] = 0;
     this.style[index]=1;
+    this.roomNumber = index;
     this.userData.rooms[index].status = 1;
     this.messageArray = this.messageArrays[index];
     this.chatService.joinRoom({username:this.username,room:this.userData.rooms[index].room,index:index});
@@ -134,9 +145,9 @@ export class ChatComponent implements OnInit {
     let e = this.times[index];
 
     let noTime = (d - e)/ 1000;
-    console.log(noTime);
+   // console.log(noTime);
     this.timer[index] = Math.abs(noTime);
-    console.log(this.roomNumber);
+   // console.log(this.roomNumber);
 
   }
   leaveRoom(){
