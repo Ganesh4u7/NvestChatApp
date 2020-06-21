@@ -116,10 +116,10 @@ io.on('connection',socket=>{
                  timer[index]=myDate.getTime();
 
                 console.log(timer[index]);
-                messageData.find({room:data1.rooms[index].room},function (err2,data2) {
+                messageData.find({room:room},function (err2,data2) {
                   if(err2){console.log(err2)}
                   else{
-                    // console.log(data2);
+                    console.log(data2);
                     socket.emit('messagesData',{messages:data2,index:index});
                   }
                 }).limit(30);
