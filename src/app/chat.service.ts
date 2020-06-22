@@ -10,7 +10,7 @@ export class ChatService{
 
   allowFind: boolean;
 
-  private socket = io('http://localhost:4000');
+  private socket = io('https://nvest-chatapp.herokuapp.com');
 
   constructor() { }
 
